@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html { border-radius: 20px; overflow: hidden; }
+    
+    body {
+      width: 400px;
+      min-height: 500px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    
+    .outer-wrapper { border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .container { padding: 20px; border-radius: 20px; }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header h1 { color: white; font-size: 22px; margin-bottom: 5px; font-weight: 600; }
+    .header p { color: rgba(255,255,255,0.9); font-size: 12px; }
+    
+    .tabs {
+      display: flex;
+      background: rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 5px;
+      margin-bottom: 20px;
+      gap: 4px;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 10px 6px;
+      text-align: center;
+      color: white;
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .tab:hover { background: rgba(255,255,255,0.1); }
+    .tab.active { background: white; color: #667eea; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    
+    .card h3 {
+      font-size: 14px;
+      margin-bottom: 15px;
+      color: #667eea;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+    
+    .select-box {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 13px;
+      background: #fafafa;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    
+    .select-box:focus { outline: none; border-color: #667eea; background: white; }
+    
+    .api-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 13px;
+      background: #fafafa;
+      margin-bottom: 10px;
+    }
+    
+    .api-input:focus { outline: none; border-color: #667eea; background: white; }
+    
+    .btn {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); }
+    
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #666;
+      padding: 8px 14px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .btn-secondary:hover { background: #e8e8e8; }
+    
+    .btn-favorite {
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      color: white;
+      padding: 8px 14px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    }
+    
+    .btn-favorite:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4); }
+    
+    .btn-export {
+      background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+      color: white;
+      padding: 8px 14px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+    }
+    
+    .btn-export:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4); }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+      color: white;
+      padding: 12px;
+      font-size: 13px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .style-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    
+    .style-btn {
+      padding: 12px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .style-btn:hover { border-color: #667eea; background: #f8f8ff; transform: translateY(-2px); }
+    .style-btn.active { border-color: #667eea; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+    
+    .result-content {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #444;
+      max-height: 180px;
+      overflow-y: auto;
+      padding: 14px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #f0f0f5 100%);
+      border-radius: 14px;
+    }
+    
+    .loading { text-align: center; color: #667eea; padding: 30px; font-size: 14px; }
+    .empty-state { text-align: center; color: #888; padding: 30px; font-size: 13px; }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #eee;
+    }
+    
+    .stat-item { text-align: center; padding: 8px 10px; background: #f8f9fa; border-radius: 10px; min-width: 60px; }
+    .stat-value { font-size: 18px; font-weight: bold; color: #667eea; }
+    .stat-label { font-size: 10px; color: #888; margin-top: 3px; }
+    
+    .action-buttons { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    
+    .history-list { max-height: 280px; overflow-y: auto; }
+    
+    .history-item {
+      padding: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 10px;
+      margin-bottom: 6px;
+    }
+    
+    .history-item:hover { background: #f8f9fa; transform: translateX(3px); }
+    .favorite-item { background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%); border: 1px solid #ffe4c4; }
+    .favorite-item:hover { background: linear-gradient(135deg, #fff0d9 0%, #ffe8cc 100%); }
+    
+    .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .history-style { font-size: 10px; padding: 4px 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; }
+    .history-time { font-size: 10px; color: #999; }
+    .history-preview { font-size: 12px; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); border-radius: 20px; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; border-radius: 20px; padding: 24px; width: 90%; max-height: 85%; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .modal-header h3 { color: #667eea; font-size: 16px; font-weight: 600; }
+    .close-btn { background: #f5f5f5; border: none; font-size: 18px; cursor: pointer; color: #666; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+    .close-btn:hover { background: #e8e8e8; transform: rotate(90deg); }
+    .modal-body { font-size: 13px; line-height: 1.6; color: #444; }
+    .original-text { background: linear-gradient(135deg, #f8f9fa 0%, #f0f0f5 100%); padding: 14px; border-radius: 12px; margin-bottom: 15px; font-size: 12px; color: #555; max-height: 100px; overflow-y: auto; }
+    
+    .hidden { display: none !important; }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 13px;
+      z-index: 2000;
+      animation: slideDown 0.3s ease;
+      box-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
+      font-weight: 500;
+    }
+    
+    @keyframes slideDown {
+      from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+      to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+    
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    
+    .setting-label { font-size: 13px; color: #444; font-weight: 500; }
+    .setting-desc { font-size: 11px; color: #888; margin-top: 3px; }
+    
+    .model-config { display: none; }
+    .model-config.active { display: block; }
+    
+    .info-box {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #1565c0;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+    
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #bbb; }
+  </style>
+</head>
+<body>
+  <div class="outer-wrapper">
+    <div class="container">
+      <div class="header">
+        <h1>🚀 速读助手</h1>
+        <p>AI 驱动的网页内容总结</p>
+      </div>
+      
+      <div class="tabs">
+        <div class="tab active" data-tab="summary">总结</div>
+        <div class="tab" data-tab="history">历史</div>
+        <div class="tab" data-tab="favorites">收藏</div>
+        <div class="tab" data-tab="settings">设置</div>
+      </div>
+      
+      <!-- 总结标签页 -->
+      <div id="summary-tab" class="tab-content active">
+        <div class="card">
+          <h3>🎨 总结风格</h3>
+          <div class="style-options">
+            <button class="style-btn active" data-style="concise">简洁版</button>
+            <button class="style-btn" data-style="detailed">详细版</button>
+            <button class="style-btn" data-style="bullet">要点版</button>
+            <button class="style-btn" data-style="twitter">推特版</button>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h3>📝 总结结果</h3>
+          <div id="result" class="result-content">
+            <div class="empty-state">选中网页文字后右键点击"速读总结"</div>
+          </div>
+          <div id="loading" class="loading hidden">正在总结...</div>
+          <div class="action-buttons">
+            <button id="copyResult" class="btn btn-secondary hidden">📋 复制</button>
+            <button id="favoriteResult" class="btn btn-favorite hidden">⭐ 收藏</button>
+            <button id="exportMarkdown" class="btn btn-export hidden">📝 MD</button>
+            <button id="exportTxt" class="btn btn-export hidden" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">📄 TXT</button>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h3>📊 使用统计</h3>
+          <div class="stats">
+            <div class="stat-item">
+              <div class="stat-value" id="todayCount">0</div>
+              <div class="stat-label">今日</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="totalCount">0</div>
+              <div class="stat-label">总计</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="historyCount">0</div>
+              <div class="stat-label">历史</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="favoriteCount">0</div>
+              <div class="stat-label">收藏</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 历史标签页 -->
+      <div id="history-tab" class="tab-content">
+        <div class="card">
+          <h3>📚 历史记录</h3>
+          <div id="historyList" class="history-list">
+            <div class="empty-state">暂无历史记录</div>
+          </div>
+          <button id="clearHistory" class="btn btn-danger">🗑️ 清空历史</button>
+        </div>
+      </div>
+      
+      <!-- 收藏标签页 -->
+      <div id="favorites-tab" class="tab-content">
+        <div class="card">
+          <h3>⭐ 我的收藏</h3>
+          <div id="favoritesList" class="history-list">
+            <div class="empty-state">暂无收藏<br><br>在总结结果中点击"⭐ 收藏"按钮添加</div>
+          </div>
+          <button id="clearFavorites" class="btn btn-danger" style="background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);">🗑️ 清空收藏</button>
+        </div>
+      </div>
+      
+      <!-- 设置标签页 -->
+      <div id="settings-tab" class="tab-content">
+        <div class="card">
+          <h3>🤖 AI 模型</h3>
+          <select id="modelSelect" class="select-box">
+            <option value="zhipu">智谱 AI (GLM-4) - 在线</option>
+            <option value="ollama">Ollama (本地) - 离线</option>
+          </select>
+          
+          <!-- 智谱配置 -->
+          <div id="zhipuConfig" class="model-config active">
+            <div class="info-box">
+              💡 需要智谱 AI API Key，<a href="https://open.bigmodel.cn/" target="_blank" style="color: #1565c0;">点击申请</a>
+            </div>
+            <input type="password" id="apiKey" class="api-input" placeholder="输入智谱 AI API Key">
+            <button id="saveApiKey" class="btn btn-primary">💾 保存 API Key</button>
+          </div>
+          
+          <!-- Ollama 配置 -->
+          <div id="ollamaConfig" class="model-config">
+            <div class="info-box">
+              💻 需要本地安装 Ollama<br>
+              1. 安装 Ollama: <a href="https://ollama.com" target="_blank" style="color: #1565c0;">ollama.com</a><br>
+              2. 下载模型: <code>ollama pull llama3.2</code><br>
+              3. 保持 Ollama 运行
+            </div>
+            <input type="text" id="ollamaModel" class="api-input" placeholder="模型名称 (默认: llama3.2)" value="llama3.2">
+          </div>
+        </div>
+        
+        <div class="card">
+          <h3>⚙️ 其他设置</h3>
+          <div class="setting-item">
+            <div>
+              <div class="setting-label">自动保存历史</div>
+              <div class="setting-desc">关闭后不会自动保存总结记录</div>
+            </div>
+            <input type="checkbox" id="autoSave" checked style="width: 20px; height: 20px; accent-color: #667eea; cursor: pointer;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 详情弹窗 -->
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>📄 总结详情</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 8px; font-size: 11px; color: #888; font-weight: 500;">原文预览：</div>
+        <div id="modalOriginal" class="original-text"></div>
+        <div style="margin-bottom: 8px; font-size: 11px; color: #888; font-weight: 500;">总结结果：</div>
+        <div id="modalSummary"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
